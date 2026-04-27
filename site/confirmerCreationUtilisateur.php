@@ -120,7 +120,6 @@ include "header.php";
 		$requetePrepare->bindParam(':adresse', $adresse, PDO::PARAM_STR);
 		$motDePasseHash = password_hash($motDePasse, PASSWORD_DEFAULT);
 		$requetePrepare->bindParam(':motDePasse', $motDePasseHash, PDO::PARAM_STR);
-		$requetePrepare->bindParam(':motDePasse', $motDePasse, PDO::PARAM_STR);
 		$requetePrepare->bindParam(':avatar', $avatar, PDO::PARAM_INT);
 		$requetePrepare->bindParam(':pays', $pays, PDO::PARAM_INT);
 		$requetePrepare->bindParam(':newsletter', $newsletter, PDO::PARAM_INT);
