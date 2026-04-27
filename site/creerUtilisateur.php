@@ -258,20 +258,23 @@ include "header.php";
 
 			<div class="row">
 
-				<!-- mot de passe : champ de type password, obligatoire, regex au moins 8 caractères, au moins 1 chiffre, au moins une majuscule et une minuscule -->
-				<div class="col-md-4">
-					<label for="motDePasse">Mot de passe</label>
-					<input type="password" class="form-control" id="motDePasse" name="motDePasse" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-					<small class="form-text text-muted">Le mot de passe doit comporter au moins 8 caractères, dont au moins 1 chiffre, 1 majuscule et 1 minuscule.</small>
-				</div>
+	<!-- mot de passe -->
+	<div class="col-md-4">
+		<label for="motDePasse">Mot de passe</label>
+		<input type="password" class="form-control" id="motDePasse" name="motDePasse" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+		<p id="forceMotDePasse"></p>
+		<small class="form-text text-muted">
+			Le mot de passe doit comporter au moins 8 caractères, dont au moins 1 chiffre, 1 majuscule et 1 minuscule.
+		</small>
+	</div>
 
-				<!-- confirmation mot de passe : champ de type password, obligatoire, regex au moins 8 caractères, au moins 1 chiffre, au moins une majuscule et une minuscule -->
-				<div class="col-md-4">
-					<label for="confirmationMotDePasse">Confirmation du mot de passe</label>
-					<input type="password" class="form-control" id="confirmationMotDePasse" name="confirmationMotDePasse" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
-				</div>
+	<!-- confirmation -->
+	<div class="col-md-4">
+		<label for="confirmationMotDePasse">Confirmation du mot de passe</label>
+		<input type="password" class="form-control" id="confirmationMotDePasse" name="confirmationMotDePasse" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+	</div>
 
-			</div>
+</div>
 
 			<div class="row">
 				<!-- inscription newsletter : champ de type checkbox, selectionné par défaut -->
@@ -290,10 +293,39 @@ include "header.php";
 
 
 	<?php } else {
-	?>
-		<div class="alert alert-danger">Vous devez faire un choix</div>
-	<?php } ?>
+?>
+    <div class="alert alert-danger">Vous devez faire un choix</div>
+<?php } ?>
 </div>
+
+<script>
+window.onload = function () {
+    var mdp = document.getElementById("motDePasse");
+    var forceMdp = document.getElementById("forceMotDePasse");
+
+    if (!mdp || !forceMdp) return;
+
+    mdp.addEventListener("input", function () {
+        var motDePasse = mdp.value;
+        var force = 0;
+
+        if (motDePasse.length >= 8) force++;
+        if (/[a-z]/.test(motDePasse)) force++;
+        if (/[A-Z]/.test(motDePasse)) force++;
+        if (/[0-9]/.test(motDePasse)) force++;
+        if (/[^A-Za-z0-9]/.test(motDePasse)) force++;
+
+        if (force <= 2) {
+            forceMdp.textContent = "Force : faible";
+        } else if (force <= 4) {
+            forceMdp.textContent = "Force : moyenne";
+        } else {
+            forceMdp.textContent = "Force : forte";
+        }
+    });
+};
+</script>
+
 <?php
 include "footer.php";
 ?>
